@@ -1,0 +1,210 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js ie ie6 lte9 lte8 lte7" lang="en" dir="ltr"><![endif]-->
+<!--[if IE 7]><html class="no-js ie ie7 lte9 lte8 lte7" lang="en" dir="ltr"><![endif]-->
+<!--[if IE 8]><html class="no-js ie ie8 lte9 lte8" lang="en" dir="ltr"><![endif]-->
+<!--[if IE 9]><html class="no-js ie ie9 lte9" lang="en" dir="ltr"><![endif]-->
+<!--[if gt IE 9]><html class="no-js" lang="en" dir="ltr"><![endif]-->
+<!--[if !IE]><!--><html class="no-js" lang="en" dir="ltr"><!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+
+		<!--
+		Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		-->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+		<title>Cart - E-Commerce Package for FuelPHP</title>
+		<meta name="description" content="">
+		<meta name="author" content="Chase Hutchins">
+
+		<!-- Mobile viewport optimized -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<link rel="shortcut icon" href="../assets/img/favicon.ico">
+		<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+
+		<!-- CSS: implied media="all" -->
+		<link rel="stylesheet" href="../assets/css/style.css?v=2">
+
+		<!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+		<script src="../assets/js/libs/modernizr-1.7.min.js"></script>
+	</head>
+	<body>
+
+		<div id="container">
+
+			<aside id="sidebar">
+				<nav id="main-nav"></nav>
+			</aside>
+
+			<div id="main" role="main">
+
+				<h1>Shoping Cart Class</h1>
+				
+				<p>The cart class permits items to be added to a session that stays active while a user is browsing your site. These items can be retrieved and displayed in a standard "shopping carT" format, allow the user to updat etheir quantity or remove items from the cart</p>
+
+				<h2>Adding an item to the cart</h2>
+				<p>To add an item to the shopping cart, simply pass an array with the product information to the <kbd>Cart::insert()</kbd> function, as shown below:</p>
+
+				<pre><code>$data = array(
+	'id'      => 'sku_123ABC',
+	'qty'     => 2,
+	'price'   => 39.99,
+	'name'    => 'Ninja Costume',
+	'options' => array(
+		'size'   => 'L',
+		'color'  => 'black',
+	),
+);
+
+Cart::insert($data);</code></pre>
+
+				<p class="dialog important">
+					<strong>Important:</strong>
+					The first four array indexes above (<kbd>id</kbd>, <kbd>qty</kbd>, <kbd>price</kbd>, and <kbd>name</kbd>) are <strong>required</strong>. If you omit any of them the data will not be saved to the cart. The fifth index (<kbd>options</kbd>) is optional. It is intended to be used in cases where your product has many options associated with it. Use an array for options, as shown above.
+				</p>
+
+				<p>The five reserved indexes are:</kbd>
+				<ul>
+					<li><strong>id</strong> - Each product in your store must have a unique identifier. Typically this will be shown as "sku" or other such identifiers</li>
+					<li><strong>qty</strong> - The quantity being purchased</li>
+					<li><strong>price</strong> - The price of the item</li>
+					<li><strong>name</strong> - The name of the item</li>
+					<li><strong>options</strong> - Any additional attributes that are needed to identify the product. These must be passed via an array</li>
+				</ul>
+
+				<p>In addition to the five indexes above, there are two reserved words: <kbd>rowid</kbd> and <kbd>sub_total</kbd>. These are used internally by the Cart class, so please do NOT use those words as index names when inserting data into the cart.</p>
+				<p>Your array may contain additional data. Anything you include in your array will be stored in the session. However, it is best to standardize your data among all of your products in order to make displaying the information in a table easier.</p>
+
+				<h2>Adding multiple items to the cart</h2>
+				<p>By using a multi-dimensional array, as shown below, it is possible to add multiple products to the cart in one action. This is useful in cases where you wish to allow people to select from among several items on the same page.</p>
+
+				<pre><code>$data = array(
+	array(
+		'id'      => 'sku_123ABC',
+		'qty'     => 2,
+		'price'   => 39.99,
+		'name'    => 'Ninja Costume',
+		'options' => array(
+			'size'   => 'L',
+			'color'  => 'black',
+		),
+	),
+	array(
+		'id'      => 'sku_FOO123',
+		'qty'     => 1,
+		'price'   => 9.95,
+		'name'    => 'Coffee Mug',
+	),
+	array(
+		'id'      => 'sku_BAR123',
+		'qty'     => 5,
+		'price'   => 29.99,
+		'name'    => 'Shot Glass',
+	),
+);
+
+Cart::insert($data);</code></pre>
+
+				<h2>Displaying the cart</h2>
+				<p>A more detailed explanation of implementing Cart into View files will be written at a later time, however, please note the availability of the Cart::contents(); function, which will return an array of the current carts contents for your looping pleasures.</p>
+
+				<h2>Updating the cart</h2>
+				<p>To update the information in your cart, you must pass an array containing the <strong>Row ID</strong> and the quantity to the <kbd>Cart::update()</kbd> function:</p>
+
+				<p class="dialog important">
+					<strong>Note:</strong>
+					If the quantity is set to zero, the item will be removed from the cart.
+				</p>
+				
+				<pre><code>$data = array(
+	'rowid' => 'b99ccdf16028f015540f341130b6d8ec',
+	'qty' => 258,
+);
+
+Cart::update($data);
+
+// Or a multidimensional array
+
+$data = array(
+	array(
+		'rowid'   => 'b99ccdf16028f015540f341130b6d8ec',
+		'qty'     => 3
+	),
+	array(
+		'rowid'   => 'xw82g9q3r495893iajdh473990rikw23',
+		'qty'     => 4
+	),
+	array(
+		'rowid'   => 'fh4kdkkkaoe30njgoe92rkdkkobec333',
+		'qty'     => 2
+	)
+);
+
+Cart::update($data);</code></pre>
+
+				<p><strong>What is the Row ID?</strong> The <em>row ID</em> is a unique identifier that is generated by the cart code when an item is added to the cart. The reason a unique ID is created is so that identical products with different options can be managed by the cart.</p>
+				<p>For example, let's say someone buys two identical t-shirts (same product ID), but in different sizes. The product ID (and other attributes, such as the name) will be identical for both sizes, because it's the same shirt. The only difference will be the size. The cart must therefore have a means of identifying this difference so that the two sizes of shirts can be managed independently. It does so be creating a unique "row ID" based on the product ID and any options associated with it.</p>
+				<p>In nearly all cases, updating the cart will be something the user does via the "view cart" page, so as a developer, it is unlikely you will have to concern yourself with the "row ID", other than making sure your "view cart" page contains this information in a hidden form field, and making sure it gets passed to the update function when the update form is submitted.</p>
+
+				<h1>Function Reference</h1>
+				
+				<h2>Cart::insert()</h2>
+				<p>Permits you to add items to the shopping cart, as outlined above</p>
+				
+				<h2>Cart::update()</h2>
+				<p>Permits you to update items in the shopping cart, as outlined above</p>
+
+				<h2>Cart::total()</h2>
+				<p>Returns the total amount in the cart</p>
+
+				<h2>Cart::total_items()</h2>
+				<p>Returns the total number of items in the cart</p>
+
+				<h2>Cart::contents()</h2>
+				<p>Returns an array containing everything in the cart</p>
+
+				<h2>Cart::has_options( row_id )</h2>
+				<p>Returns boolean true if a particular row in the cart contains options. this function is designed to be used in a loop with Cart::contents(), since you must pass the rowid to this function.</p>
+
+				<h2>Cart::product_options( row_id )</h2>
+				<p>Returns an array of options for a particular product. This function is designed to be used in a loop with Cart::contents(), since you must pass the rowid to this function.</p>
+
+				<h2>Cart::destroy()</h2>
+				<p>Permits you to destroy the cart. This function will likely be called when you are finished processing the customer's order.</p>
+
+			</div>
+
+			<footer id="footer">
+				<p><a href="#">Fuel E-Commerce</a> is released under the MIT License</p>
+				<p>&copy; 2011 Syntaqx Development</p>
+			</footer>
+
+		</div>
+
+		<!-- JavaScript at the bottom for fast page loading -->
+
+		<!-- Grab Google CDN's jQuery, with a protocol relative URL; fall back to local if necessary -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script>window.jQuery || document.write("<script src='../assets/js/libs/jquery-1.6.2.min.js'>\x3C/script>")</script>
+
+		<!-- scripts concatenated and minified -->
+		<script src="../assets/js/plugins.js"></script>
+		<script src="../assets/js/script.js"></script>
+		<!-- end scripts-->
+
+		<script type="text/javascript"> 
+			$(function() {
+				show_nav('classes', '../');
+				hljs.tabReplace = '	';
+				hljs.initHighlightingOnLoad();
+			});
+		</script>
+
+		<!--[if lt IE 7 ]>
+		<script src="../assets/js/libs/dd_belatedpng.js"></script>
+		<script>DD_belatedPNG.fix("img, .png_bg"); // Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb </script>
+		<![endif]-->
+
+	</body>
+</html>
