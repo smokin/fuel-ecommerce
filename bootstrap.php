@@ -13,7 +13,7 @@
 
 Autoloader::add_core_namespace('Ecommerce');
 
-Autloader::add_classes(array(
+Autoloader::add_classes(array(
 	'Ecommerce\\Cart'              => __DIR__.'/classes/cart.php',
 ));
 
