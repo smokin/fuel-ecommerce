@@ -6,9 +6,9 @@
  * 
  * @package    E-Commerce
  * @version    1.0
- * @author     Fuel Syntaqx Development
+ * @author     Syntaqx Development Team
  * @license    MIT License
- * @copyright  2011 Fuel Syntaqx Development
+ * @copyright  2011 Syntaqx Development
  */
 
 Autoloader::add_core_namespace('Ecommerce');
